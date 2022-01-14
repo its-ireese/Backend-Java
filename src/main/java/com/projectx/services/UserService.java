@@ -24,7 +24,6 @@ public class UserService {
      * @return the user associated with the user's id, else null if
      * the user id does not exist
      */
-
     public User findUserById(Integer userId) {
         return this.userDao.findById(userId).orElse(null);
     }
@@ -36,7 +35,6 @@ public class UserService {
      * user's data from the database
      * @return the user associated with the user's email
      */
-    
     public User findUserByEmail(String email) {
     	return this.userDao.findUserByEmail(email);
     }
@@ -48,7 +46,6 @@ public class UserService {
      * this action is intended for verifying users in the database via Postman,
      * but may be deleted.
      */
-
     public List<User> findAllUsers() {
         return this.userDao.findAll();
     }
@@ -60,9 +57,8 @@ public class UserService {
      * @return the user that was successfully added, else null if
      * the user already exists
      */
-
     public User createUser(User user) {
-        User temp = this.userDao.findUserByEmail(user.getEmail());
+        User temp = getUserByEmail(user.getEmail());
         if(temp != null)
             return null;
         return this.userDao.save(user);
@@ -75,7 +71,6 @@ public class UserService {
      * @param password - the user's password
      * @return the user associated with the user's email and password
      */
-
     public User getUserByEmailAndPassword(String email, String password) {
         return this.userDao.findUserByEmailAndPassword(email, password);
     }
@@ -86,7 +81,6 @@ public class UserService {
      * @param user - the user's new info to be updated in the database
      * @return the updated user, else null if user does not exist
      */
-
     public User editUser(User user) {
         User temp = this.userDao.findById(user.getUserId()).orElse(null);
         if(temp == null)
@@ -111,8 +105,16 @@ public class UserService {
      *
      * @param user - the user to be deleted from the database
      */
-
     public void deleteUser(User user) {
         this.userDao.delete(user);
+    }
+
+    /**
+     * Finds a user from the database by its email
+     * @param email - the email that the user belongs to
+     * @return a user that the email belongs to or null if the email does not exist within the database
+     */
+    public User getUserByEmail(String email) {
+        return userDao.findUserByEmail(email);
     }
 }

@@ -138,4 +138,24 @@ public class UserController {
 
         return response;
     }
+
+    /**
+     *
+     * @param email - the email to be checked if it exists in the database
+     * @return http response with a string message in a {@link ResponseEntity} that contains an ACCEPTED request if the
+     * user was updated, else an UNAUTHORIZED request.
+     */
+    @NoAuth
+    @GetMapping("{email}")
+    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
+        ResponseEntity<User> response;
+        User temp = userService.getUserByEmail(email);
+        if (temp == null) {
+            response = new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        } else {
+            temp.setPassword(null); //hides password
+            response = new ResponseEntity<>(temp, HttpStatus.FOUND);
+        }
+        return response;
+    }
 }
